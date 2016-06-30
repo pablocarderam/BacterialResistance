@@ -37,7 +37,7 @@ def resSim(MutProb, coopRep, abForce): # 0-1 mutation prob, 0-1 ratio of coopRep
     seedProbCoop = 0.5; # probability that a initialized cell is a cooperator
 
     # Arrays and matrices
-    cells = np.array([[0 if np.random.random()>seedProbCell else 2 if np.random.random()<seedProbCoop else 1 for x in range(size)] for y in range(size)]); # initializaes cell matrix 
+    cells = np.array([[0 if np.random.random()>seedProbCell else 2 if np.random.random()<seedProbCoop else 1 for x in range(size)] for y in range(size)]); # initializaes cell matrix
     cells[0,:] = 0; # set borders to empty. borders are not used in sim
     cells[cells.shape[0]-1,:] = 0;
     cells[:,0] = 0;
@@ -64,7 +64,7 @@ def resSim(MutProb, coopRep, abForce): # 0-1 mutation prob, 0-1 ratio of coopRep
         ncoop = 0; # cooperator cell counter
         ndef = 0; # defector cell counter
 
-        if t == abTime: # add antibiotic at given turn 
+        if t == abTime: # add antibiotic at given turn
             ab[:,:] = 1;
 
         # Resistance matrix has to be updated before death checks
@@ -95,7 +95,7 @@ def resSim(MutProb, coopRep, abForce): # 0-1 mutation prob, 0-1 ratio of coopRep
 
         if (t*100./numTurns)%10 == 0:
             print str(int(t*100./numTurns))+ '% de turnos simulados';
-            
+
     return ncoop+ndef
 
 
@@ -112,7 +112,7 @@ for i in range(sweepSize):
     for j in range(sampleSize):
         nc500[j] = resSim(0.05,0.3,sweep[i]);
         print 'Done simulating '+str(j+1)+' of step '+str(i+1);
-    
+
     ncMean500[i] = np.mean(nc500);
     ncSTD500[i] = np.std(nc500);
 
@@ -134,7 +134,7 @@ plt.show();
 ### Rendering
 
 # Board animation
-plt.switch_backend('tkagg'); # esoteric stuff. switches plotting backend or something.
+# plt.switch_backend('tkagg'); # esoteric stuff. switches plotting backend or something.
 
 fig, ax = plt.subplots(1); # make figure
 fig.set_size_inches(fig.get_size_inches()[0]+1, fig.get_size_inches()[1], forward=True); # Makes figure wider to accomodate legend
@@ -142,7 +142,7 @@ fig.set_size_inches(fig.get_size_inches()[0]+1, fig.get_size_inches()[1], forwar
 # make a color map of fixed colors
 colMap = matplotlib.colors.ListedColormap(['beige', 'y', 'darkolivegreen']); # list colors for color map
 bounds = [0,1,2,3]; # assign colors to ranges (less than or equal to value)
-norm = matplotlib.colors.BoundaryNorm(bounds, colMap.N); # produces normalized range for color map 
+norm = matplotlib.colors.BoundaryNorm(bounds, colMap.N); # produces normalized range for color map
 
 im = plt.imshow(mad[0][1:cells.shape[0]-1, 1:cells.shape[1]-1], interpolation="None", origin='upper', cmap=colMap, norm=norm); # make axisimage object with colormap out of cells matrix. Exclude borders.
 
@@ -152,7 +152,7 @@ cBar = plt.colorbar(im, cmap=colMap, norm=norm, boundaries=bounds, ticks=[]); # 
 
 for i, lab in enumerate(['Empty','Defectors (R-)','Cooperators (R+)']): # iterate and add labels to color bar
     cBar.ax.text(1.5, (2*i+1)/6., lab, ha='left', va='center');
-    
+
 # these are matplotlib.patch.Patch properties
 props = dict(boxstyle='round', facecolor='wheat', alpha=0.5);
 turnTxt = ax.text(0.83, 0.07, 't = 0', transform=ax.transAxes, fontsize=10, verticalalignment='top', bbox=props); # place a text box in upper left in axes coords
@@ -164,7 +164,7 @@ def updatefig(j):
     return im, turnTxt # return artists set
 
 # kick off animation
-ani = animation.FuncAnimation(fig, updatefig, frames=range(numTurns), interval=1000./fps, blit=True);
+ani = animation.FuncAnimation(fig, updatefig, frames=range(numTurns), interval=1000./fps, blit=False);
 plt.show();
 
 # Static population graph
@@ -172,9 +172,9 @@ tSeries = range(0,numTurns);
 c = []; # total cells
 for i in range(0,len(nc)):
     c.append(nc[i]+nd[i]);
-    
+
 plt.axvline(x=abTime,ymin=0,ymax=max(c)+2,color="blue",label='Antibiotic',linewidth=2); # tracks antibiotic
-        
+
 plt.plot(tSeries,nc,label="Cooperators",color='darkolivegreen');
 plt.plot(tSeries,nd,label="Defectors",color='y');
 plt.plot(tSeries,c,label="Total",color='green');
@@ -187,7 +187,7 @@ plt.show();
 
 # In[267]:
 
-print 2-1 or 2; # 
+print 2-1 or 2; #
 
 
 # In[292]:
@@ -196,6 +196,3 @@ print range(0,2);
 
 
 # In[ ]:
-
-
-
